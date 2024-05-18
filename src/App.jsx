@@ -1,6 +1,7 @@
 import GamePage from "./components/GamePage"
 import Landing from "./components/Landing"
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
+import LeaderboardPage from "./components/LeaderboardPage"
 
 const router = createBrowserRouter([
   {
@@ -10,6 +11,10 @@ const router = createBrowserRouter([
   {
     path: '/game',
     element: <GamePage/>
+  },
+  {
+    path: '/leaderboard',
+    element: <LeaderboardPage/>
   }
 ])
 
