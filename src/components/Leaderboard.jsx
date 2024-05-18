@@ -1,4 +1,9 @@
+import { useEffect, useState } from "react"
+import { db } from "../lib/firebase"
+import { collection, doc, getDocs, onSnapshot } from "firebase/firestore"
+
 const Leaderboard = () => {
+    const [data, setData] = useState([])
     const tempData = [
         {
             name: "Flack1",
@@ -16,8 +21,28 @@ const Leaderboard = () => {
             mistakes: 3
         },
     ]
-    const sortedData = tempData.sort((a, b) => b.words - a.words)
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const querySnapshot = await getDocs(collection(db, 'leaderboard'))
+                const leaderboardData = querySnapshot.docs.map(doc => doc.data())
+                setData(leaderboardData)
+            } catch (error) {
+                console.error("Error fetching leaderboard data: ", error)
+            }
+        }
+
+        fetchData()
+    }, [])
+
+    const sortedData = data.sort((a, b) => {
+        if (a.words === b.words) {
+            return a.mistakes - b.mistakes
+        } else {
+            return b.words - a.words
+        }
+    })
     return (
         <div className="flex flex-grow bg-zinc-900 px-12 py-4 h-full justify-center">
             <div className="w-full p-2">
@@ -28,15 +53,18 @@ const Leaderboard = () => {
                     <h1>Words Per Minute</h1>
                     <h1>Mistakes</h1>
                 </div>
-                {sortedData.map((item, index) => (
-                    <div key={index} className="text-white py-4 grid grid-cols-4 border-b-2 border-gray-600">
-                        <h1 className="text-xl text-center">#{index+1}</h1>
-                        <h1 className="text-xl text-center">{item.name}</h1>
-                        <p className="text-lg font-semibold text-center">{item.words} WPM</p>
-                        <p className="text-lg font-semibold text-center">{item.mistakes} mistakes</p>
-
-                    </div>
-                ))}
+                {sortedData.length === 0 ? (
+                    <p className="text-white text-center py-4">No users yet</p>
+                ) : (
+                    sortedData.map((item, index) => (
+                        <div key={index} className="text-white py-4 grid grid-cols-4 border-b-2 border-gray-600">
+                            <h1 className="text-xl text-center">#{index+1}</h1>
+                            <h1 className="text-xl text-center">{item.name}</h1>
+                            <p className="text-lg font-semibold text-center">{item.words} WPM</p>
+                            <p className="text-lg font-semibold text-center">{item.mistakes} mistakes</p>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
     )
