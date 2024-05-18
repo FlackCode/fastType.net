@@ -131,7 +131,14 @@ const Game = () => {
                         <div className="xl:w-1/3 xsm:w-full">
                             <form onSubmit={handleForm} className="flex flex-col gap-4 items-center w-full">
                                 <h1 className="text-2xl text-white font-bold">Submit your score!</h1>
-                                <input type="text" placeholder="Name..." name="name" className="p-2 w-full" value={name} onChange={e => setName(e.target.value)}/>
+                                <input 
+                                type="text" 
+                                placeholder="Name..." 
+                                name="name" 
+                                className="p-2 w-full" 
+                                value={name} 
+                                onChange={e => setName(e.target.value)}
+                                autoComplete="off"/>
                                 <div className="flex gap-4 w-full">
                                     <button className='px-4 py-2 bg-white border-2 font-bold rounded-xl transition-all duration-200
                                     hover:scale-110 hover:bg-zinc-900 hover:border-white hover:text-white self-center w-1/2'
