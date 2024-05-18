@@ -47,23 +47,21 @@ const Game = () => {
 
     const calcWPM = () => {
         const wordsTyped = input.trim().split(' ')
+        const totalWords = wordsTyped.length
+        setWordCount(totalWords)
         const shownWords = words.split(' ')
-        let correctWords = 0
         let mistakes = 0
         wordsTyped.forEach((word, index) => {
-            if (word == shownWords[index]) {
-                correctWords++
-            } else {
-                for (let i = 0; i< Math.min(word.length, shownWords[index].length); i++) {
+            if (word !== shownWords[index]) {
+                for (let i = 0; i < Math.min(word.length, shownWords[index].length); i++) {
                     if (word[i] !== shownWords[index][i]) {
                         mistakes++
                     }
                 }
             }
         })
-        setWordCount(correctWords)
         setMistake(mistakes)
-    }
+        }
 
     const restartGame = () => {
         location.reload()
@@ -85,7 +83,7 @@ const Game = () => {
 
     return(
         <div className="flex flex-grow bg-zinc-900 p-6 h-full justify-center">
-            <div className="xsm:w-full md:w-4/5 border-2 border-white p-4 flex flex-col gap-8 rounded-xl">
+            <div className="xsm:w-full md:w-4/5 border-2 border-gray-500 p-4 flex flex-col gap-8 rounded-xl">
                 <div className="flex justify-between">
                     <h1 className="text-white text-3xl">Timer: {timer}</h1>
                     {timer == 0 && (
